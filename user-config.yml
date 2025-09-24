@@ -51,13 +51,13 @@
           if [ -f "$HOME/.motd" ]; then
               . "$HOME/.motd"
           fi
-  
+
     - name: Fastfetch config
       ansible.builtin.copy:
         src: files/fastfetch.jsonc
         dest: /home/{{ ansible_user }}/.config/fastfetch/config.jsonc
         mode: '0644'
-  
+
     - name: .motd call
       ansible.builtin.blockinfile:
         path: /home/{{ ansible_user }}/.profile
