@@ -5,7 +5,7 @@
   tasks:
     - name: Aliases
       ansible.builtin.lineinfile:
-        path: /home/{{ ansible_user }}/.bash_aliases
+        path: /home/{{ ansible_user_id }}/.bash_aliases
         create: true
         mode: '0644'
         regexp: "{{ item.regexp }}"
@@ -23,7 +23,7 @@
 
     - name: Bash search hotkeys
       ansible.builtin.lineinfile:
-        path: /home/{{ ansible_user }}/.inputrc
+        path: /home/{{ ansible_user_id }}/.inputrc
         create: true
         mode: '0644'
         regexp: "{{ item.regexp }}"
@@ -35,7 +35,7 @@
 
     - name: Editor
       ansible.builtin.lineinfile:
-        path: /home/{{ ansible_user }}/.profile
+        path: /home/{{ ansible_user_id }}/.profile
         create: true
         mode: '0644'
         regexp: '^export EDITOR='
@@ -43,24 +43,25 @@
 
     - name: Fastfetch call in .motd
       ansible.builtin.blockinfile:
-        path: /home/{{ ansible_user }}/.motd
+        path: /home/{{ ansible_user_id }}/.motd
         create: true
         mode: '0744'
         marker: "# {mark} fastfetch"
         block: |
-          if [ -f "$HOME/.motd" ]; then
-              . "$HOME/.motd"
-          fi
+          #!/bin/bash
+          echo -e ""
+          fastfetch
+          echo -e ""
 
     - name: Fastfetch config
       ansible.builtin.copy:
         src: files/fastfetch.jsonc
-        dest: /home/{{ ansible_user }}/.config/fastfetch/config.jsonc
+        dest: /home/{{ ansible_user_id }}/.config/fastfetch/config.jsonc
         mode: '0644'
 
     - name: .motd call
       ansible.builtin.blockinfile:
-        path: /home/{{ ansible_user }}/.profile
+        path: /home/{{ ansible_user_id }}/.profile
         create: true
         mode: '0644'
         marker: "# {mark} motd"
@@ -71,7 +72,7 @@
 
     - name: Midnight Commander keymap panel section
       ansible.builtin.lineinfile:
-        path: /home/{{ ansible_user }}/.config/mc/mc.keymap
+        path: /home/{{ ansible_user_id }}/.config/mc/mc.keymap
         create: true
         mode: '0644'
         regexp: '^\[panel\]$'
@@ -79,7 +80,7 @@
 
     - name: Midnight Commander keymap CdChild
       ansible.builtin.lineinfile:
-        path: /home/{{ ansible_user }}/.config/mc/mc.keymap
+        path: /home/{{ ansible_user_id }}/.config/mc/mc.keymap
         create: true
         mode: '0644'
         regexp: '^CdChild ='
@@ -88,7 +89,7 @@
 
     - name: Midnight Commander keymap CdParent
       ansible.builtin.lineinfile:
-        path: /home/{{ ansible_user }}/.config/mc/mc.keymap
+        path: /home/{{ ansible_user_id }}/.config/mc/mc.keymap
         create: true
         mode: '0644'
         regexp: '^CdParent ='
