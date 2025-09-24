@@ -1,0 +1,96 @@
+---
+- name: Configure user environment
+  hosts: all
+
+  tasks:
+    - name: Aliases
+      ansible.builtin.lineinfile:
+        path: /home/{{ ansible_user }}/.bash_aliases
+        create: true
+        mode: '0644'
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^alias \.\.=', line: 'alias ..="cd .."' }
+        - { regexp: '^alias \.\.\.=', line: 'alias ...="cd ../.."'}
+        - { regexp: '^alias ls=', line: 'alias ls="ls --color=auto"' }
+        - { regexp: '^alias l=', line: 'alias l="ls -lF --si"' }
+        - { regexp: '^alias ll=', line: 'alias ll="ls -laF"' }
+        - { regexp: '^alias la=', line: 'alias la="ls -A"' }
+        - { regexp: '^alias grep=', line: 'alias grep="grep --color=auto"' }
+        - { regexp: '^alias egrep=', line: 'alias egrep="egrep --color=auto"' }
+        - { regexp: '^alias fgrep=', line: 'alias fgrep="fgrep --color=auto"' }
+
+    - name: Bash search hotkeys
+      ansible.builtin.lineinfile:
+        path: /home/{{ ansible_user }}/.inputrc
+        create: true
+        mode: '0644'
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^"\\e\[A":', line: '"\e\[A": history-search-backward' }
+        - { regexp: '^"\\e\[B":', line: '"\e\[B": history-search-forward' }
+        - { regexp: '^set completion-ignore-case', line: 'set completion-ignore-case on' }
+
+    - name: Editor
+      ansible.builtin.lineinfile:
+        path: /home/{{ ansible_user }}/.profile
+        create: true
+        mode: '0644'
+        regexp: '^export EDITOR='
+        line: 'export EDITOR=/usr/bin/joe'
+
+    - name: Fastfetch call in .motd
+      ansible.builtin.blockinfile:
+        path: /home/{{ ansible_user }}/.motd
+        create: true
+        mode: '0744'
+        marker: "# {mark} fastfetch"
+        block: |
+          if [ -f "$HOME/.motd" ]; then
+              . "$HOME/.motd"
+          fi
+  
+    - name: Fastfetch config
+      ansible.builtin.copy:
+        src: files/fastfetch.jsonc
+        dest: /home/{{ ansible_user }}/.config/fastfetch/config.jsonc
+        mode: '0644'
+  
+    - name: .motd call
+      ansible.builtin.blockinfile:
+        path: /home/{{ ansible_user }}/.profile
+        create: true
+        mode: '0644'
+        marker: "# {mark} motd"
+        block: |
+          if [ -f "$HOME/.motd" ]; then
+              . "$HOME/.motd"
+          fi
+
+    - name: Midnight Commander keymap panel section
+      ansible.builtin.lineinfile:
+        path: /home/{{ ansible_user }}/.config/mc/mc.keymap
+        create: true
+        mode: '0644'
+        regexp: '^\[panel\]$'
+        line: '[panel]'
+
+    - name: Midnight Commander keymap CdChild
+      ansible.builtin.lineinfile:
+        path: /home/{{ ansible_user }}/.config/mc/mc.keymap
+        create: true
+        mode: '0644'
+        regexp: '^CdChild ='
+        line: 'CdChild = right'
+        insertafter: '^\[panel\]$'
+
+    - name: Midnight Commander keymap CdParent
+      ansible.builtin.lineinfile:
+        path: /home/{{ ansible_user }}/.config/mc/mc.keymap
+        create: true
+        mode: '0644'
+        regexp: '^CdParent ='
+        line: 'CdParent = left'
+        insertafter: '^\[panel\]$'
