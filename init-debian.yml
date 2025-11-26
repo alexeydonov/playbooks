@@ -16,6 +16,7 @@
       ansible.builtin.apt:
         name:
           - sudo
+          - ufw
           - tailscale
           - joe
           - mc
