@@ -1,5 +1,11 @@
 # Ansible playbooks
 
+## Prerequisites
+
+```bash
+sudo apt install ansible
+```
+
 ## init-debian
 
 ```bash
