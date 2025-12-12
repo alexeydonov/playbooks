@@ -58,7 +58,6 @@
         src: files/fastfetch.jsonc
         dest: /home/{{ ansible_user_id }}/.config/fastfetch/config.jsonc
         mode: '0644'
-        state: 'directory'
 
     - name: .motd call
       ansible.builtin.blockinfile:
@@ -70,12 +69,6 @@
           if [ -f "$HOME/.motd" ]; then
               . "$HOME/.motd"
           fi
-
-    - name: Midnight Commander config directory
-      ansible.builtin.file:
-        path: /home/{{ ansible_user_id }}/.config/mc
-        state: 'directory'
-        mode: '0755'
 
     - name: Midnight Commander keymap panel section
       ansible.builtin.lineinfile:
