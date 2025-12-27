@@ -119,3 +119,15 @@
         regexp: '^CdParent ='
         line: 'CdParent = left'
         insertafter: '^\[panel\]$'
+
+    - name: Git config user.name
+      community.general.git_config:
+        name: user.name
+        scope: global
+        value: "Alexey Donov"
+
+    - name: Git config user.email
+      community.general.git_config:
+        name: user.email
+        scope: global
+        value: "alexeydonov@mac.com"
