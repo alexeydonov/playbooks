@@ -35,7 +35,7 @@
       ansible.builtin.apt_repository:
         repo: >
           deb https://pkgs.tailscale.com/stable/debian
-          {{ ansible_distribution_release }} main"
+          {{ ansible_distribution_release }} main
         state: present
         filename: tailscale
         update_cache: true
