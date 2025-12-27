@@ -5,24 +5,11 @@
   become: true
 
   tasks:
-    - name: Tailscale repository key
-      ansible.builtin.apt_key:
-        url: https://pkgs.tailscale.com/stable/debian/trixie.noarmor.gpg
-        state: present
-
-    - name: Tailscale repository
-      ansible.builtin.apt_repository:
-        repo: "deb https://pkgs.tailscale.com/stable/debian {{ ansible_distribution_release }} main"
-        state: present
-        filename: tailscale
-        update_cache: true
-
     - name: Install packages
       ansible.builtin.apt:
         name:
           - sudo
           - ufw
-          - tailscale
           - vi
           - mc
           - btop
@@ -33,5 +20,25 @@
           - smartmontools
           - bash_completion
           - fastfetch
+        state: present
+        update_cache: true
+
+    - name: Download Tailscale GPG key
+      ansible.builtin.get_url:
+        url: https://pkgs.tailscale.com/stable/debian/trixie.noarmor.gpg
+        dest: /usr/share/keyrings/tailscale-archive-keyring.gpg
+        mode: '0644'
+      become: true
+
+    - name: Tailscale repository
+      ansible.builtin.apt_repository:
+        repo: "deb https://pkgs.tailscale.com/stable/debian {{ ansible_distribution_release }} main"
+        state: present
+        filename: tailscale
+        update_cache: true
+
+    - name: Install Tailscale
+      ansible.builtin.apt:
+        name: tailscale
         state: present
         update_cache: true
