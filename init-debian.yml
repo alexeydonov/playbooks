@@ -10,7 +10,7 @@
         name:
           - sudo
           - ufw
-          - vi
+          - vim
           - mc
           - btop
           - git
