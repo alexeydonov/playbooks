@@ -39,7 +39,7 @@
         create: true
         mode: '0644'
         regexp: '^export EDITOR='
-        line: 'export EDITOR=/usr/bin/joe'
+        line: 'export EDITOR=/usr/bin/vi'
 
     - name: Fastfetch call in .motd
       ansible.builtin.blockinfile:
