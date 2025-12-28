@@ -55,3 +55,13 @@
         dest: /etc/bash_completion.d/tailscale
         creates: /etc/bash_completion.d/tailscale
         mode: '0644'
+
+    - name: Add myself to sudoers
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/alexey
+        content: |
+          alexey ALL=(ALL) NOPASSWD: ALL
+        owner: root
+        group: root
+        mode: '0440'
+        validate: 'visudo -cf %s'

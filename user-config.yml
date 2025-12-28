@@ -3,17 +3,6 @@
   hosts: all
 
   tasks:
-    - name: Add user to sudoers
-      ansible.builtin.copy:
-        dest: /etc/sudoers.d/{{ ansible_user_id }}
-        content: |
-          {{ ansible_user_id }} ALL=(ALL) NOPASSWD: ALL
-        owner: root
-        group: root
-        mode: '0440'
-        validate: 'visudo -cf %s'
-      become: true
-
     - name: Ensure .ssh directory exists
       ansible.builtin.file:
         dest: /home/{{ ansible_user_id }}/.ssh
