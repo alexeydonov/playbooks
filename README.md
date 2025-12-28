@@ -3,7 +3,7 @@
 ## Prerequisites
 
 ```bash
-sudo apt install ansible
+sudo apt install ansible git
 ```
 
 ## init-debian
@@ -15,5 +15,5 @@ sudo ansible-pull -U https://github.com/alexeydonov/playbooks.git -C main -i loc
 ## user-config
 
 ```bash
-ansible-pull -U https://github.com/alexeydonov/playbooks.git -C main -i localhost, user-config.yml
+ansible-pull --ask-become-pass -U https://github.com/alexeydonov/playbooks.git -C main -i localhost, user-config.yml
 ```
