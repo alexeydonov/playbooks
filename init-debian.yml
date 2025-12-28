@@ -41,3 +41,8 @@
         name: tailscale
         state: present
         update_cache: true
+
+    - name: Tailscale completion
+      ansible.builtin.command:
+        cmd: tailscale completions bash > /etc/bash_completion.d/tailscale
+        creates: /etc/bash_completion.d/tailscale
