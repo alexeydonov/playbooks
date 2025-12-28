@@ -9,11 +9,11 @@ sudo apt install ansible git
 ## init-debian
 
 ```bash
-sudo ansible-pull -U https://github.com/alexeydonov/playbooks.git -C main -i localhost, init-debian.yml
+sudo ansible-pull --url https://github.com/alexeydonov/playbooks.git init-debian.yml
 ```
 
 ## user-config
 
 ```bash
-ansible-pull --ask-become-pass -U https://github.com/alexeydonov/playbooks.git -C main -i localhost, user-config.yml
+ansible-pull --url https://github.com/alexeydonov/playbooks.git user-config.yml
 ```
