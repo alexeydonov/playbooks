@@ -5,9 +5,9 @@
   tasks:
     - name: Add user to sudoers
       ansible.builtin.copy:
-        dest: /etc/sudoers.d/{{ ansible_user_id }}
+        dest: /etc/sudoers.d/{{ ansible_env.SUDO_USER }}
         content: |
-          {{ ansible_user_id }} ALL=(ALL) NOPASSWD: ALL
+          {{ ansible_env.SUDO_USER }} ALL=(ALL) NOPASSWD: ALL
         owner: root
         group: root
         mode: '0440'
