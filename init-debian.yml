@@ -25,15 +25,17 @@
         update_cache: true
 
     - name: Download Tailscale GPG key
-      ansible.builtin.get_url:
+      ansible.builtin.uri:
         url: https://pkgs.tailscale.com/stable/debian/trixie.noarmor.gpg
         dest: /usr/share/keyrings/tailscale-archive-keyring.gpg
+        creates: /usr/share/keyrings/tailscale-archive-keyring.gpg
         mode: '0644'
 
     - name: Tailscale repository
-      ansible.builtin.get_url:
+      ansible.builtin.uri:
         url: https://pkgs.tailscale.com/stable/debian/trixie.tailscale-keyring.list
         dest: /etc/apt/sources.list.d/tailscale.list
+        creates: /etc/apt/sources.list.d/tailscale.list
         mode: '0644'
 
     - name: Install Tailscale
