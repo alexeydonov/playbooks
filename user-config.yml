@@ -24,6 +24,7 @@
       community.crypto.openssh_keypair:
         type: ed25519
         path: /home/{{ ansible_user_id }}/.ssh/id_ed25519
+        comment: "{{ ansible_user_id }}@{{ inventory_hostname }}"
         mode: '0600'
 
     - name: Aliases
