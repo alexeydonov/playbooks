@@ -1,7 +1,7 @@
 ---
 - name: Configure Debian host
-  hosts: all
-  remote_user: root
+  hosts: localhost
+  connection: local
   become: true
 
   tasks:

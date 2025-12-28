@@ -1,6 +1,7 @@
 ---
 - name: Configure user environment
-  hosts: all
+  hosts: localhost
+  connection: local
 
   tasks:
     - name: Ensure .ssh directory exists
