@@ -53,4 +53,5 @@
       ansible.builtin.copy:
         content: "{{ tailscale_completion_output.stdout }}"
         dest: /etc/bash_completion.d/tailscale
+        creates: /etc/bash_completion.d/tailscale
         mode: '0644'
