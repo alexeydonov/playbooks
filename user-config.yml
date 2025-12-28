@@ -27,6 +27,14 @@
         comment: "{{ ansible_user_id }}@{{ inventory_hostname }}"
         mode: '0600'
 
+    - name: Force color prompt
+      ansible.builtin.lineinfile:
+        path: /home/{{ ansible_user_id }}/.bashrc
+        create: true
+        mode: '0644'
+        regexp: '^#force_color_prompt='
+        line: 'force_color_prompt=yes'
+
     - name: Aliases
       ansible.builtin.lineinfile:
         path: /home/{{ ansible_user_id }}/.bash_aliases
