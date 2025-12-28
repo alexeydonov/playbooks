@@ -44,7 +44,13 @@
         state: present
         update_cache: true
 
-    - name: Tailscale completion
-      ansible.builtin.command:
-        cmd: 'tailscale completion bash > /etc/bash_completion.d/tailscale'
-        creates: /etc/bash_completion.d/tailscale
+    - name: Generate Tailscale completion
+      ansible.builtin.command: tailscale completion bash
+      register: tailscale_completion_output
+      changed_when: false
+
+    - name: Write Tailscale completion
+      ansible.builtin.copy:
+        content: "{{ tailscale_completion_output.stdout }}"
+        dest: /etc/bash_completion.d/tailscale
+        mode: '0644'
