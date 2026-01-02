@@ -65,3 +65,8 @@
         group: root
         mode: '0440'
         validate: 'visudo -cf %s'
+
+    - name: Clean out system motd
+      ansible.builtin.file:
+        dest: /etc/motd
+        state: absent
