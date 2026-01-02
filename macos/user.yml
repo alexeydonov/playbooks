@@ -64,6 +64,24 @@
         - { regexp: '^alias l=', line: 'alias l="ls -lF"' }
         - { regexp: '^alias ll=', line: 'alias ll="ls -laF"' }
 
+    - name: Archive aliases
+      ansible.builtin.copy:
+        src: files/archive
+        dest: "{{ ansible_user_dir }}/.zshrc.d/archive"
+        mode: '0644'
+
+    - name: Util aliases
+      ansible.builtin.copy:
+        src: files/utils
+        dest: "{{ ansible_user_dir }}/.zshrc.d/utils"
+        mode: '0755'
+
+    - name: HEVC command
+      ansible.builtin.copy:
+        src: files/hevc
+        dest: "{{ ansible_user_dir }}/.zshrc.d/hevc"
+        mode: '0755'
+
     - name: Zshenv
       ansible.builtin.copy:
         src: files/zshenv
