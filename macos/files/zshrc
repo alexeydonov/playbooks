@@ -1,0 +1,26 @@
+# zsh-autosuggestions
+#source /opt/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+source /opt/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+bindkey "^[[A" history-search-backward
+bindkey "^[[B" history-search-forward
+
+autoload -U compinit; compinit
+zstyle  ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+setopt nocasematch
+bindkey -e
+
+export CLICOLOR=1
+export LSCOLORS="Gxfxcxdxbxegedabagacad"
+export GREP_OPTIONS="--colour"
+export PS1="%F{001}%n@%m%f:%F{009}%1~%f \$ "
+
+if [ -d ~/.zshrc.d ]; then
+    for rc in ~/.zshrc.d/*; do
+        if [ -f "$rc" ]; then
+            . "$rc"
+        fi
+    done
+fi
+unset rc
+

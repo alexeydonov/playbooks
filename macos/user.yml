@@ -1,0 +1,77 @@
+---
+- name: Configure macOS user environment
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Ensure .ssh directory exists
+      ansible.builtin.file:
+        dest: "{{ ansible_user_dir }}/.ssh"
+        state: directory
+        mode: '0700'
+
+    - name: Generate SSH keys
+      community.crypto.openssh_keypair:
+        type: ed25519
+        path: "{{ ansible_user_dir }}/.ssh/id_ed25519"
+        comment: "{{ ansible_user_id }}@{{ ansible_hostname }}"
+        mode: '0600'
+
+    - name: Zshrc
+      ansible.builtin.copy:
+        src: files/zshrc
+        dest: "{{ ansible_user_dir }}/.zshrc"
+        mode: '0644'
+
+    - name: Zshrc includes directory
+      ansible.builtin.file:
+        dest: "{{ ansible_user_dir }}/.zshrc.d"
+        state: directory
+        mode: '0755'
+
+    - name: Source zshrc.d in .zshrc
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_user_dir }}/.zshrc"
+        block: |
+          # Source zshrc.d files
+          for file in ~/.zshrc.d/*; do
+            if [[ -f "$file" ]]; then
+              source "$file"
+            fi
+          done
+
+    - name: Cd aliases
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_user_dir }}/.zshrc.d/cd"
+        create: true
+        mode: '0644'
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^alias \.\.=', line: 'alias ..="cd .."' }
+        - { regexp: '^alias \.\.\.=', line: 'alias ...="cd ../.."' }
+        - { regexp: '^alias ~=', line: 'alias ~="cd ~"' }
+        - { regexp: '^alias --', line: 'alias -- --="cd --"' }
+
+    - name: Ls aliases
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_user_dir }}/.zshrc.d/ls"
+        create: true
+        mode: '0644'
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^alias l=', line: 'alias l="ls -lF"' }
+        - { regexp: '^alias ll=', line: 'alias ll="ls -laF"' }
+
+    - name: Zshenv
+      ansible.builtin.copy:
+        src: files/zshenv
+        dest: "{{ ansible_user_dir }}/.zshenv"
+        mode: '0644'
+
+    - name: Zprofile
+      ansible.builtin.copy:
+        src: files/zprofile
+        dest: "{{ ansible_user_dir }}/.zprofile"
+        mode: '0644'

@@ -11,11 +11,25 @@ sudo apt install ansible git
 ### system
 
 ```bash
-sudo ansible-pull --url https://github.com/alexeydonov/playbooks.git debian/system.yml
+sudo ansible pull --url https://github.com/alexeydonov/playbooks.git debian/system.yml
 ```
 
 ### user
 
 ```bash
-ansible-pull --url https://github.com/alexeydonov/playbooks.git debian/user.yml
+ansible pull --url https://github.com/alexeydonov/playbooks.git debian/user.yml
+```
+
+## macOS
+
+### Prerequisites
+
+```zsh
+sudo port install ansible git
+```
+
+### user
+
+```zsh
+ansible pull --url https://github.com/alexeydonov.net/playbooks.git macos/user.yml
 ```
