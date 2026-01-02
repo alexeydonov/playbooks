@@ -163,6 +163,12 @@
         state: directory
         mode: '0755'
 
+    - name: Midnight Commander ini file
+      ansible.builtin.copy:
+        src: files/mc.ini
+        dest: "{{ ansible_user_dir }}/.config/mc/ini"
+        mode: '0644'
+
     - name: Midnight Commander keymap panel section
       ansible.builtin.lineinfile:
         path: "{{ ansible_user_dir }}/.config/mc/mc.keymap"
