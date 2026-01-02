@@ -75,3 +75,33 @@
         src: files/zprofile
         dest: "{{ ansible_user_dir }}/.zprofile"
         mode: '0644'
+
+    - name: Config directory
+      ansible.builtin.file:
+        dest: "{{ ansible_user_dir }}/.config"
+        state: directory
+        mode: '0755'
+
+    - name: Midnight Commander config directory
+      ansible.builtin.file:
+        dest: "{{ ansible_user_dir }}/.config/mc"
+        state: directory
+        mode: '0755'
+
+    - name: Midnight Commander ini file
+      ansible.builtin.copy:
+        src: files/mc.ini
+        dest: "{{ ansible_user_dir }}/.config/mc/ini"
+        mode: '0644'
+
+    - name: Git config user.name
+      community.general.git_config:
+        name: user.name
+        scope: global
+        value: "Alexey Donov"
+
+    - name: Git config user.email
+      community.general.git_config:
+        name: user.email
+        scope: global
+        value: "alexeydonov@mac.com"
