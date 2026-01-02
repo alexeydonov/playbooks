@@ -54,8 +54,8 @@
         regexp: "{{ item.regexp }}"
         line: "{{ item.line }}"
       loop:
-        - { regexp: '^alias cd\.\.=', line: 'alias cd..="cd .."' }
-        - { regexp: '^alias cd\.\.\.=', line: 'alias cd...="cd ../.."' }
+        - { regexp: '^alias \.\.=', line: 'alias ..="cd .."' }
+        - { regexp: '^alias \.\.\.=', line: 'alias ...="cd ../.."' }
 
     - name: Ls aliases
       ansible.builtin.lineinfile:
