@@ -28,6 +28,12 @@ ansible pull --url https://github.com/alexeydonov/playbooks.git debian/user.yml
 sudo port install ansible git
 ```
 
+### Ports
+
+```zsh
+sudo ansible pull --url https://github.com/alexeydonov/playbooks.git macos/ports.yml
+```
+
 ### user
 
 ```zsh

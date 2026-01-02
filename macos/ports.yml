@@ -1,0 +1,22 @@
+---
+- name: Install MacPorts
+  hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+    - name: Ports
+      community.general.macports:
+        name: "{{ ports }}"
+      vars:
+        ports:
+          - btop
+          - curl
+          - fastfetch
+          - ffmpeg7
+          - git
+          - lazygit
+          - mc
+          - p7zip
+          - rsync
+          - wget
