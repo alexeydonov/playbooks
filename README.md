@@ -1,12 +1,12 @@
 # Ansible playbooks
 
-## Prerequisites
+## Debian
+
+### Prerequisites
 
 ```bash
 sudo apt install ansible git
 ```
-
-## Debian
 
 ### system
 
