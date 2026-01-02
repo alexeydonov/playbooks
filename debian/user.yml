@@ -105,7 +105,7 @@
       ansible.builtin.blockinfile:
         path: /home/{{ ansible_user_id }}/.motd
         create: true
-        mode: '0744'
+        mode: '0644'
         marker: "# {mark} fastfetch"
         block: |
           echo -e ""
