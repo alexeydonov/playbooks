@@ -57,7 +57,7 @@
         - { regexp: '^alias \.\.=', line: 'alias ..="cd .."' }
         - { regexp: '^alias \.\.\.=', line: 'alias ...="cd ../.."' }
         - { regexp: '^alias ~=', line: 'alias ~="cd ~"' }
-        - { regexp: '^alias --=', line: 'alias -- --="cd --"' }
+        - { regexp: '^alias --', line: 'alias -- --="cd --"' }
 
     - name: Ls aliases
       ansible.builtin.lineinfile:
