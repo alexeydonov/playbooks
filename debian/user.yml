@@ -6,7 +6,7 @@
     prompt_time: '\[${gray}\]\t '
     prompt_chroot: '\[${white}\]${debian_chroot:+($debian_chroot)}'
     prompt_color: "{{ prompt | default('green') }}"
-    prompt_path: '\[${{{ prompt_color }}}\]\u@\h\[${reset}\]:\[${blue}\]\w\[${reset}\]\$ '
+    prompt_path: '\[${ {{ prompt_color }} }\]\u@\h\[${reset}\]:\[${blue}\]\w\[${reset}\]\$ '
 
   tasks:
     - name: Ensure .ssh directory exists
