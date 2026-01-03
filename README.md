@@ -20,6 +20,19 @@ sudo ansible pull --url https://github.com/alexeydonov/playbooks.git debian/syst
 ansible pull --url https://github.com/alexeydonov/playbooks.git debian/user.yml
 ```
 
+For prompt colors use:
+
+```bash
+ansible pull --url https://github.com/alexeydonov/playbooks.git debian/user.yml -e prompt=PRESET
+```
+
+Available presets:
+
+- `green` (default)
+- `magenta`
+- `orange`
+- `yellow`
+
 ## macOS
 
 ### Prerequisites

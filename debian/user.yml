@@ -2,6 +2,16 @@
 - name: Configure user environment
   hosts: localhost
   connection: local
+  vars:
+    prompt_time: '\[$(tput setaf 240)\]\t \[$(tput setaf 15)\]'
+    prompt_chroot: '${debian_chroot:+($debian_chroot)}'
+    prompt_presets:
+      default: '\[$(tput setaf 40)\]\u@\h\[$(tput sgr0)\]:\[$(tput setaf 33)\]\w\[$(tput sgr0)\]\$ '
+      green: '\[$(tput setaf 40)\]\u@\h\[$(tput sgr0)\]:\[$(tput setaf 33)\]\w\[$(tput sgr0)\]\$ '
+      magenta: '\[$(tput setaf 201)\]\u@\h\[$(tput sgr0)\]:\[$(tput setaf 33)\]\w\[$(tput sgr0)\]\$ '
+      orange: '\[$(tput setaf 208)\]\u@\h\[$(tput sgr0)\]:\[$(tput setaf 33)\]\w\[$(tput sgr0)\]\$ '
+      yellow: '\[$(tput setaf 226)\]\u@\h\[$(tput sgr0)\]:\[$(tput setaf 33)\]\w\[$(tput sgr0)\]\$ '
+    prompt_preset: "{{ prompt_presets[prompt] | default(prompt_presets.default) }}"
 
   tasks:
     - name: Ensure .ssh directory exists
@@ -108,6 +118,16 @@
         - { regexp: '^"\\e\[A":', line: '"\e\[A": history-search-backward' }
         - { regexp: '^"\\e\[B":', line: '"\e\[B": history-search-forward' }
         - { regexp: '^set completion-ignore-case', line: 'set completion-ignore-case on' }
+
+    - name: Prompt color
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_user_dir }}/.bashrc"
+        create: true
+        mode: '0644'
+        regexp: '^\s*PS1='
+        insertafter: '^if \[ "\$color_prompt" = yes \]; then'
+        firstmatch: true
+        line: "  PS1='{{ prompt_time }}{{ prompt_chroot }}{{ prompt_preset }}'"
 
     - name: Editor
       ansible.builtin.lineinfile:
