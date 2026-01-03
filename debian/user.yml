@@ -7,6 +7,8 @@
     prompt_chroot: '${debian_chroot:+($debian_chroot)}'
     prompt_presets:
       green: '\[$(tput setaf 40)\]\u@\h\[$(tput sgr0)\]:\[$(tput setaf 33)\]\w\[$(tput sgr0)\]\$ '
+      red: '\[$(tput setaf 9)\]\u@\h\[$(tput sgr0)\]:\[$(tput setaf 33)\]\w\[$(tput sgr0)\]\$ '
+      pink: '\[$(tput setaf 213)\]\u@\h\[$(tput sgr0)\]:\[$(tput setaf 33)\]\w\[$(tput sgr0)\]\$ '
       magenta: '\[$(tput setaf 201)\]\u@\h\[$(tput sgr0)\]:\[$(tput setaf 33)\]\w\[$(tput sgr0)\]\$ '
       orange: '\[$(tput setaf 208)\]\u@\h\[$(tput sgr0)\]:\[$(tput setaf 33)\]\w\[$(tput sgr0)\]\$ '
       yellow: '\[$(tput setaf 226)\]\u@\h\[$(tput sgr0)\]:\[$(tput setaf 33)\]\w\[$(tput sgr0)\]\$ '

@@ -29,6 +29,8 @@ ansible-pull --url https://github.com/alexeydonov/playbooks.git debian/user.yml 
 Available presets:
 
 - `green` (default)
+- `red`
+- `pink`
 - `magenta`
 - `orange`
 - `yellow`
