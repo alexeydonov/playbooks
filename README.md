@@ -8,10 +8,16 @@
 sudo apt install ansible git
 ```
 
-### system
+### server
 
 ```bash
-sudo ansible-pull --url https://github.com/alexeydonov/playbooks.git debian/system.yml
+sudo ansible-pull --url https://github.com/alexeydonov/playbooks.git debian/server.yml
+```
+
+### desktop
+
+```bash
+sudo ansible-pull --url https://github.com/alexeydonov/playbooks.git debian/desktop.yml
 ```
 
 ### user

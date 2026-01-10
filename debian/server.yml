@@ -1,5 +1,5 @@
 ---
-- name: Configure Debian host
+- name: Configure Debian Server host
   hosts: localhost
   connection: local
   become: true

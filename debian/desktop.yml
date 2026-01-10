@@ -1,0 +1,70 @@
+---
+- name: Configure Debian Desktop host
+  hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+    - name: Install packages
+      ansible.builtin.apt:
+        name:
+          - sudo
+          - gpg
+          - vim
+          - mc
+          - btop
+          - git
+          - curl
+          - wget
+          - powertop
+          - smartmontools
+          - bash-completion
+          - fastfetch
+        state: present
+        update_cache: true
+
+    - name: Download Tailscale GPG key
+      ansible.builtin.uri:
+        url: https://pkgs.tailscale.com/stable/debian/trixie.noarmor.gpg
+        dest: /usr/share/keyrings/tailscale-archive-keyring.gpg
+        creates: /usr/share/keyrings/tailscale-archive-keyring.gpg
+        mode: '0644'
+
+    - name: Tailscale repository
+      ansible.builtin.uri:
+        url: https://pkgs.tailscale.com/stable/debian/trixie.tailscale-keyring.list
+        dest: /etc/apt/sources.list.d/tailscale.list
+        creates: /etc/apt/sources.list.d/tailscale.list
+        mode: '0644'
+
+    - name: Install Tailscale
+      ansible.builtin.apt:
+        name: tailscale
+        state: present
+        update_cache: true
+
+    - name: Generate Tailscale completion
+      ansible.builtin.command: tailscale completion bash
+      register: tailscale_completion_output
+      changed_when: false
+
+    - name: Write Tailscale completion
+      ansible.builtin.copy:
+        content: "{{ tailscale_completion_output.stdout }}"
+        dest: /etc/bash_completion.d/tailscale
+        mode: '0644'
+
+    - name: Add myself to sudoers
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/alexey
+        content: |
+          alexey ALL=(ALL) NOPASSWD: ALL
+        owner: root
+        group: root
+        mode: '0440'
+        validate: 'visudo -cf %s'
+
+    - name: Clean out system motd
+      ansible.builtin.file:
+        dest: /etc/motd
+        state: absent
