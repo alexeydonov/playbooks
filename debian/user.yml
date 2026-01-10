@@ -88,37 +88,62 @@
         - { regexp: '^alias egrep=', line: 'alias egrep="egrep --color=auto"' }
         - { regexp: '^alias fgrep=', line: 'alias fgrep="fgrep --color=auto"' }
 
-    - name: Docker compose aliases
-      ansible.builtin.copy:
-        dest: "{{ ansible_user_dir }}/.bashrc.d/docker"
+    - name: Docker compose simple aliases
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_user_dir }}/.bashrc.d/docker"
+        create: true
         mode: '0644'
-        content: |
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^alias dcu=', line: 'alias dcu="docker compose up -d"' }
+        - { regexp: '^alias dcd=', line: 'alias dcd="docker compose down"' }
+        - { regexp: '^alias dcr=', line: 'alias dcr="docker compose restart"' }
+        - { regexp: '^alias vdc=', line: 'alias vdc="vi docker-compose.yml"' }
+
+    - name: Docker container list completion
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_user_dir }}/.bashrc.d/docker"
+        create: true
+        mode: '0644'
+        marker: "# {mark} docker completion list"
+        block: |
           {% raw %}
-          alias dcu="docker compose up -d"
-          alias dcd="docker compose down"
-          alias dcr="docker compose restart"
-          alias vdc="vi docker-compose.yml"
-
-          dl() {
-              docker logs --follow --tail=100 $1
-          }
-
-          de() {
-              docker exec -it "$1" sh
-          }
-
           _docker_containers() {
-              local cur
-              cur="${COMP_WORDS[COMP_CWORD]}"
+            local cur
+            cur="${COMP_WORDS[COMP_CWORD]}"
 
-              COMPREPLY=(
-                  $(compgen -W "$(docker ps --format '{{.Names}}')" -- "$cur")
-              )
+            COMPREPLY=(
+              $(compgen -W "$(docker ps --format '{{.Names}}')" -- "$cur")
+            )
           }
-
-          complete -F _docker_containers dl
-          complete -F _docker_containers de
           {% endraw %}
+
+    - name: Docker logs alias
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_user_dir }}//.bashrc.d/docker"
+        create: true
+        mode: '0644'
+        marker: "# {mark} docker logs alias"
+        block: |
+          dl() {
+            docker logs --follow --tail=100 $1
+          }
+          complete -F _docker_containers dl
+        insertafter: 'docker completion list$'
+
+    - name: Docker exec alias
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_user_dir }}//.bashrc.d/docker"
+        create: true
+        mode: '0644'
+        marker: "# {mark} docker exec alias"
+        block: |
+          de() {
+            docker exec -it "$1" sh
+          }
+          complete -F _docker_containers de
+        insertafter: 'docker completion list$'
 
     - name: Bash search hotkeys
       ansible.builtin.lineinfile:
