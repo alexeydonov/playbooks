@@ -89,18 +89,36 @@
         - { regexp: '^alias fgrep=', line: 'alias fgrep="fgrep --color=auto"' }
 
     - name: Docker compose aliases
-      ansible.builtin.lineinfile:
-        path: "{{ ansible_user_dir }}/.bashrc.d/docker"
-        create: true
+      ansible.builtin.copy:
+        dest: "{{ ansible_user_dir }}/.bashrc.d/docker"
         mode: '0644'
-        regexp: "{{ item.regexp }}"
-        line: "{{ item.line }}"
-      loop:
-        - { regexp: '^alias dcu=', line: 'alias dcu="docker compose up -d"' }
-        - { regexp: '^alias dcd=', line: 'alias dcd="docker compose down"' }
-        - { regexp: '^alias dcr=', line: 'alias dcr="docker compose restart"' }
-        - { regexp: '^alias dcl=', line: 'alias dcl="docker logs --follow --tail=100"' }
-        - { regexp: '^alias vdc=', line: 'alias vdc="vi docker-compose.yml"' }
+        content: |
+          {% raw %}
+          alias dcu="docker compose up -d"
+          alias dcd="docker compose down"
+          alias dcr="docker compose restart"
+          alias vdc="vi docker-compose.yml"
+
+          dl() {
+              docker logs --follow --tail=100 $1
+          }
+
+          de() {
+              docker exec -it "$1" sh
+          }
+
+          _docker_containers() {
+              local cur
+              cur="${COMP_WORDS[COMP_CWORD]}"
+
+              COMPREPLY=(
+                  $(compgen -W "$(docker ps --format '{{.Names}}')" -- "$cur")
+              )
+          }
+
+          complete -F _docker_containers dl
+          complete -F _docker_containers de
+          {% endraw %}
 
     - name: Bash search hotkeys
       ansible.builtin.lineinfile:
