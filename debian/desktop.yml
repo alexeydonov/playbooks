@@ -16,6 +16,7 @@
           - git
           - curl
           - wget
+          - bat
           - powertop
           - smartmontools
           - bash-completion

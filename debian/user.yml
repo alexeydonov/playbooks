@@ -51,6 +51,13 @@
               done
           fi
 
+    - name: Bat alias
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_user_dir }}/.bashrc.d/bat"
+        create: true
+        mode: '0644'
+        line: 'alias cat="batcat -p"'
+
     - name: Cd aliases
       ansible.builtin.lineinfile:
         path: "{{ ansible_user_dir }}/.bashrc.d/cd"
