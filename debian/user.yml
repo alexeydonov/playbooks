@@ -2,11 +2,6 @@
 - name: Configure user environment
   hosts: localhost
   connection: local
-  vars:
-    prompt_time: '\[${gray}\]\t '
-    prompt_chroot: '\[${white}\]${debian_chroot:+($debian_chroot)}'
-    prompt_color: "{{ prompt | default('green') }}"
-    prompt_path: '\[${{ prompt_color }}\]\u@\h\[${reset}\]:\[${blue}\]\w\[${reset}\]\$ '
 
   tasks:
     - name: Ensure .ssh directory exists
@@ -184,6 +179,11 @@
         insertbefore: '^if \[ "\$color_prompt" = yes \]; then'
 
     - name: Prompt color
+      when: prompt is defined
+      vars:
+        prompt_time: '\[${gray}\]\t '
+        prompt_chroot: '\[${white}\]${debian_chroot:+($debian_chroot)}'
+        prompt_path: '\[${{ prompt }}\]\u@\h\[${reset}\]:\[${blue}\]\w\[${reset}\]\$ '
       ansible.builtin.lineinfile:
         path: "{{ ansible_user_dir }}/.bashrc"
         create: true
