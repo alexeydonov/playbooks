@@ -208,9 +208,12 @@
         mode: '0644'
         marker: "# {mark} fastfetch"
         block: |
-          echo -e ""
-          fastfetch
-          echo -e ""
+          if [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ] \
+              && command -v fastfetch >/dev/null 2>&1; then
+            echo -e ""
+            fastfetch
+            echo -e ""
+          fi
 
     - name: Config directory
       ansible.builtin.file:
