@@ -47,11 +47,14 @@
           fi
 
     - name: Bat alias
-      ansible.builtin.lineinfile:
-        path: "{{ ansible_user_dir }}/.bashrc.d/bat"
-        create: true
+      ansible.builtin.copy:
+        dest: "{{ ansible_user_dir }}/.bashrc.d/bat"
+        content: |
+          alias cat="batcat -p"
+          export BAT_THEME="Coldark-Dark"
+        owner: {{ ansible_user_id }}
+        group: {{ ansible_user_id }}
         mode: '0644'
-        line: 'alias cat="batcat -p"'
 
     - name: Cd aliases
       ansible.builtin.lineinfile:
