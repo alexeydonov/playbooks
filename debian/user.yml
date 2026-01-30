@@ -52,8 +52,8 @@
         content: |
           alias cat="batcat -p"
           export BAT_THEME="Coldark-Dark"
-        owner: {{ ansible_user_id }}
-        group: {{ ansible_user_id }}
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
         mode: '0644'
 
     - name: Cd aliases
