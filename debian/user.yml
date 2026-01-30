@@ -186,7 +186,8 @@
       vars:
         prompt_time: '\[${gray}\]\t '
         prompt_chroot: '\[${white}\]${debian_chroot:+($debian_chroot)}'
-        prompt_path: '\[${{ prompt }}\]\u@\h\[${reset}\]:\[${blue}\]\w\[${reset}\]\$ '
+        prompt_path: '\[${{ prompt }}\]\u@\h\[${reset}\]:\[${blue}\]\W\[${reset}\]'
+        prompt_tail: ' \$ '
       ansible.builtin.lineinfile:
         path: "{{ ansible_user_dir }}/.bashrc"
         create: true
@@ -194,7 +195,7 @@
         regexp: '^\s*PS1='
         insertafter: '^if \[ "\$color_prompt" = yes \]; then'
         firstmatch: true
-        line: "    PS1='{{ prompt_time }}{{ prompt_chroot }}{{ prompt_path }}'"
+        line: "    PS1='{{ prompt_chroot }}{{ prompt_path }}{{ prompt_tail }}'"
 
     - name: Editor
       ansible.builtin.lineinfile:
